@@ -1,0 +1,20 @@
+Wanted improvements and bug checks
+----
+make a check for already recorded words.
+figure out a way to deal with homographs
+figure out a way to deal with apostrophes
+fix today option so it does not overwrite saved daily files.
+fix master.bee file to have aligned columns.
+needs a check for numeric input for -n and -v flags
+put in check for sound file
+put check in to make sure there are words in master.bee
+put check in to make sure there are words in user.bee files
+fix get args to check for missing values for -n -v and -V 
+put in option to rerecord word
+
+completed improvements
+----
+moved master.bee file to live in ./etc directory 9/25
+fix today option so it will generate a new today file if one does not exist 9/24
+make today option use all words in a bee file. 9/24
+make a today option that moves the old words to new file. 9/20

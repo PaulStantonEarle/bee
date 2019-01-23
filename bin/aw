@@ -1,0 +1,23 @@
+#! /bin/csh
+
+if($#argv != 1 && $#argv != 2) then
+ echo "usage: aw word [file]"
+ exit
+endif
+
+if($#argv == 1) then
+  touch      $BEEDIR/etc/mywords.bee
+  echo $1 >> $BEEDIR/etc/mywords.bee
+  ispell     $BEEDIR/etc/mywords.bee
+  sort       $BEEDIR/etc/mywords.bee -u -o $BEEDIR/etc/mywords.bee
+  rm -f      $BEEDIR/etc/mywords.bee.bak
+  exit(0)
+endif
+if($#argv == 2) then
+  touch      $BEEDIR/etc/$2
+  echo $1 >> $BEEDIR/etc/$2
+  ispell     $BEEDIR/etc/$2
+  sort       $BEEDIR/etc/$2 -u -o $BEEDIR/etc/$2
+  rm -f      $BEEDIR/etc/$2.bak
+  exit(0)
+endif

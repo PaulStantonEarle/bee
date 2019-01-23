@@ -1,0 +1,3 @@
+#! /bin/csh
+sort $BEEDIR/etc/$1 | uniq >! $BEEDIR/etc/sorted.bee
+mv $BEEDIR/etc/sorted.bee $BEEDIR/etc/$1

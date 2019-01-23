@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="Windows-1252" ?>
+<XML_DIZ_INFO>
+<MASTER_PAD_VERSION_INFO>
+    <MASTER_PAD_VERSION>1.10</MASTER_PAD_VERSION>
+    <MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+</MASTER_PAD_VERSION_INFO>
+<Company_Info>
+        <Company_Name>Personal Best Systems</Company_Name>
+        <Address_1>PO Box 197</Address_1>
+        <Address_2 />
+        <City_Town>Mt Ommaney</City_Town>
+        <State_Province>Queensland</State_Province>
+        <Zip_Postal_Code>4074</Zip_Postal_Code>
+        <Country>Australia</Country>
+        <Company_WebSite_URL>http://www.personalbest.com.au</Company_WebSite_URL>
+<Contact_Info>
+        <Author_First_Name>Paul</Author_First_Name>
+        <Author_Last_Name>Baxter</Author_Last_Name>
+        <Author_Email>coaching@personalbest.com.au</Author_Email>
+        <Contact_First_Name>Paul</Contact_First_Name>
+        <Contact_Last_Name>Baxter</Contact_Last_Name>
+        <Contact_Email>coaching@personalbest.com.au</Contact_Email>
+    </Contact_Info>
+<Support_Info>
+        <Sales_Email>coaching@personalbest.com.au</Sales_Email>
+        <Support_Email>coaching@personalbest.com.au</Support_Email>
+        <General_Email>coaching@personalbest.com.au</General_Email>
+        <Sales_Phone>+61 7 3376 1576</Sales_Phone>
+        <Support_Phone>+61 7 3376 1576</Support_Phone>
+        <General_Phone>+61 7 3376 1576</General_Phone>
+        <Fax_Phone />
+    </Support_Info>
+</Company_Info>
+<Program_Info>
+        <Program_Name>Personal Best Spelling for Adults</Program_Name>
+        <Program_Version>1.6</Program_Version>
+        <Program_Release_Month>05</Program_Release_Month>
+        <Program_Release_Day>10</Program_Release_Day>
+        <Program_Release_Year>2001</Program_Release_Year>
+        <Program_Cost_Dollars>20</Program_Cost_Dollars>
+        <Program_Cost_Other />
+        <Program_Type>Demo</Program_Type>
+        <Program_Release_Status>New Release</Program_Release_Status>
+        <Program_Install_Support>Install and Uninstall</Program_Install_Support>
+        <Program_OS_Support>Win98,WinME,WinNT 3.x,WinNT 4.x,Windows2000</Program_OS_Support>
+        <Program_Language>English</Program_Language>
+        <Program_Change_Info />
+        <Program_System_Requirements>sound card</Program_System_Requirements>
+        <Program_Specific_Category>Education</Program_Specific_Category>
+        <Program_Categories />
+<File_Info>
+        <Filename_Versioned>pbs16adu.zip</Filename_Versioned>
+        <Filename_Previous />
+        <Filename_Generic>pbs16adu.zip</Filename_Generic>
+        <Filename_Long>pbs16adu.zip</Filename_Long>
+        <File_Size_Bytes>1863000</File_Size_Bytes>
+        <File_Size_K>1863</File_Size_K>
+        <File_Size_MB>1.86</File_Size_MB>
+    </File_Info>
+<Expire_Info>
+        <Has_Expire_Info>N</Has_Expire_Info>
+        <Expire_Count />
+        <Expire_Based_On>Days</Expire_Based_On>
+        <Expire_Other_Info />
+        <Expire_Month />
+        <Expire_Day />
+        <Expire_Year />
+    </Expire_Info>
+        <Includes_JAVA_VM>N</Includes_JAVA_VM>
+        <Includes_VB_Runtime>N</Includes_VB_Runtime>
+        <Includes_DirectX>N</Includes_DirectX>
+</Program_Info>
+<Program_Descriptions>
+<English>
+        <Keywords>spelling,spellings,spelling errors,misspellings,literacy,reading,spelling tutor,spelling software,bad spelling,poor spelling,tutoring,adult literacy,teaching methods,educational software</Keywords>
+        <Char_Desc_45>The only spelling tutor using Old Way/New Way</Char_Desc_45>
+        <Char_Desc_80>Uses Old Way/New Way, an award-winning government endorsed learning method.</Char_Desc_80>
+        <Char_Desc_250>Only Personal Best Spelling uses an improved version of Look-Say-Cover-Write-Check to learn new words and Old Way/New Way, an award winning government endorsed learning method that draws on new research into the psychology of adult learning.</Char_Desc_250>
+        <Char_Desc_450>Only Personal Best Spelling uses an improved version of Look-Say-Cover-Write-Check 
+to learn new words and Old Way/New Way, an award winning government endorsed 
+learning method that draws on new research into the psychology of adult learning. 
+Eliminate bad habits, clear up spelling uncertainty and become a confident speller with 
+this user friendly, self-paced software designed for adult learners.</Char_Desc_450>
+        <Char_Desc_2000>Only Personal Best Spelling uses an improved version of Look-Say-Cover-Write-Check 
+to learn new words and Old Way/New Way, an award winning government 
+endorsed learning method that draws on new research into the psychology of 
+learning. Eliminate bad habits, clear up spelling uncertainty and become a 
+confident speller with this user friendly, self-paced software designed designed by teachers 
+for adult learners, adult literacy tutors and students of all ages including second 
+language learners. Fully customizable with extensive word lists. On CD, downloaded and 
+site licences. Affordable, self-paced spelling software  and drawing on emerging research into the psychology of adult learning. Complete with word lists and support website. Unique learning method backed by government funded research and verified in workplace trials.</Char_Desc_2000>
+</English>
+</Program_Descriptions>
+<Web_Info>
+<Application_URLs>
+        <Application_Info_URL>http://www.personalbest.com.au/spelling2.html</Application_Info_URL>
+        <Application_Order_URL>https://secure1.gil.com.au/change/orders.html</Application_Order_URL>
+        <Application_Screenshot_URL>http://www.personalbest.com.au/pbscreen.jpg</Application_Screenshot_URL>
+        <Application_Icon_URL />
+        <Application_XML_File_URL>http://www.personalbest.com.au/pbs16adu.xml</Application_XML_File_URL>
+    </Application_URLs>
+<Download_URLs>
+        <Primary_Download_URL>http://www.personalbest.com.au/pbs16adu.zip</Primary_Download_URL>
+        <Secondary_Download_URL />
+        <Additional_Download_URL_1 />
+        <Additional_Download_URL_2 />
+    </Download_URLs>
+</Web_Info>
+<Permissions>
+        <Distribution_Permissions>1. This program is freely distributable.
+2. You may not sell the evaluation copy.
+3. This program is protected by copyright.</Distribution_Permissions>
+        <EULA>The end user licence agreement is contained in the program itself and the end user is required to accept
+ the agreement before program installation can proceed.</EULA>
+</Permissions>
+<ASP>
+    <ASP_FORM>Y</ASP_FORM>
+    <ASP_Member>N</ASP_Member>
+    <ASP_Member_Number />
+</ASP>
+<Simtel>
+    <Simtel_Email>coaching@personalbest.com.au</Simtel_Email>
+    <Simtel_FORM>Y</Simtel_FORM>
+    <Simtel_DOS_Category>Select - MS-DOS Platform</Simtel_DOS_Category>
+    <Simtel_Win31_Category>Select - Win3 Platform</Simtel_Win31_Category>
+    <Simtel_WinXX_Category>Education - edu Educational Programs and Utilities</Simtel_WinXX_Category>
+    <Simtel_Category>Education - Spelling</Simtel_Category>
+    <SIMTEL_FORM_VER>1.03 04/09/2001</SIMTEL_FORM_VER>
+</Simtel>
+</XML_DIZ_INFO>

@@ -1,0 +1,7 @@
+object
+occasion
+occupy
+occurred
+opportunity
+ordinary
+overhead

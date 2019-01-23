@@ -1,0 +1,3 @@
+#!/bin/tcsh
+clear
+flash.pl $argv

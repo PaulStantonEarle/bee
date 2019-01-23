@@ -1,0 +1,22 @@
+File Type Extension Platform
+AIFF  *.aif, *.aiff 	Mac OS
+WAV   *.wav 		Windows
+AU    *.au, *.snd 	UNIX
+MIDI  *.mid, *.midi 	any
+
+help audioplay
+-v vol        Volume: The recording gain integer value between 0 and 100
+		      if not set will use volume set by previous process
+-p speaker | headphone | line  : built in speaker is the default.
+
+
+help audiorecord
+-a  	      Append: Append the data to named file
+-v vol        Volume: The recording gain integer value between 0 and 100
+		      if not set will use volume set by previous process
+-e encoding:  Encoding: ulaw, alaw, or linear. default encoding is ulaw
+-t time       Time: recording time, or ends at a SIGINIT (ctrl-C)
+
+
+http://ecco.bsee.swin.edu.au/unix/mme_dec/RTG_7.html
+http://lios.apana.org.au/~zonavar/unix_audio.html

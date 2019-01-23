@@ -1,0 +1,404 @@
+#! /usr/bin/perl
+
+##################################################################
+# 
+#                  bee a perl script spelling bee
+#
+##################################################################
+#
+#
+# Summary:
+# A verbal spelling bee program bee -h for details
+# 
+# must set the BEEDIR environmental variable in your .cshrc to
+# point the main bee directory
+#
+# Quizzes are generated from words stored in .bee files. 
+# These words are then randomly ordered then 
+# words are played using the say program.
+#
+# .bee format:
+# word1
+# word2
+#
+#####################################################################
+#
+# todo: 
+# fix to allow single quotes e.g., don't
+#
+#  1) fix the automatic updates to the master bee file.
+#
+# The master.bee file will be updated after the quiz to keep track 
+# of your progress. 
+#
+# master.bee format: (note the ":" after the word)
+# word1: total-quiz-times total-correct-times
+# word2: total-quiz-times total-correct-times
+#
+# when coding this up make sure there are no duplicates in the 
+# master bee file.
+#
+#####################################################################
+
+use File::Basename;
+
+# immediately flush IO
+$| = 1;
+
+# Set path to Bee program 
+if(!$ENV{'BEEDIR'}) 
+{
+  print "must include BEEDIR environment variable in your .cshrc\n";
+  exit(0);
+}
+else
+{
+  $BEEDIR = $ENV{'BEEDIR'};
+}
+
+# parse command line
+getargs();
+
+# LOAD WORDS 
+@allwords = loadwords($flags{'-file'});
+@words = getlist(@allwords,$flags{'-n'});
+
+# LOAD WORDS IN COMMON WORDS 
+open (CWORDS,"<$BEEDIR/etc/in_common_spelling.dat");
+@wordsincommon = <CWORDS>;
+
+#START THE QUIZ
+$exit  = 0;
+$totalmissed = 0;
+do{
+  if($flags{'-t'} eq 'rand')
+  {
+    @words = getlist(@allwords,1);
+    @words = quiz(@words);
+    if($words[0] eq "QUIT"){$exit = 1};
+  }
+  if($flags{'-t'} eq 'rmiss')
+  {
+    @words = getlist(@words,$#words+1);
+    @words = quiz(@words);
+    if($#words == -1 or $words[0] eq "QUIT"){$exit = 1};
+    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    $tmp = $#words+1;
+    $totalmissed = $totalmissed+$#words+1;
+    print "$totalmissed misspellings\n";
+  }
+  if($flags{'-t'} eq 'rall')
+  {
+    @words = getlist(@words,$#words+1);
+    @misswords = quiz(@words);
+    if($#misswords == -1 or $misswords[0] eq "QUIT"){$exit = 1};
+    print "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    $totalmissed = $totalmissed+$#misswords+1;
+    print "$totalmissed misspellings\n";
+  }
+}while(!$exit);
+
+print "Thanks for playing\n";
+
+ # generate logfile and plotfile name
+ my ($logfile,$plotfile);
+ $logfile = "$BEEDIR/log/".&basename($flags{'-file'}).".log";
+ $plotfile = "$BEEDIR/log/".&basename($flags{'-file'}).".plt";
+
+ # print results to log file
+ open LOG, ">>$logfile";
+ $right = $flags{-n}-$totalmissed;
+ print LOG "$flags{'-n'} $right\n"; close LOG;
+ open LOG, "<$logfile";
+ my @history = <LOG>;
+ close LOG;
+
+ #  plot results
+ open PLT, ">$plotfile";
+ my $ii=0;
+ foreach(@history){
+   my($num,$right) = split;
+   print PLT $ii++," ",100*$right/$num,"\n";
+ }
+ close PLT;
+
+ open GNUPLOT,"|gnuplot";
+ # immediately flush IO
+ select GNUPLOT; $| = 1;
+ print GNUPLOT 'set xlabel "test"',"\n";
+ print GNUPLOT 'set ylabel "score [percentage]"',"\n";
+ print GNUPLOT 'set title "improvement monitor for bee"',"\n";
+ print GNUPLOT "set grid; set yrange [0 to 110]\n";
+ print GNUPLOT "set style data linespoints\n";
+ print GNUPLOT "plot \"$plotfile\"\n";
+
+ print STDOUT "hit return to exit\n";
+ my $tmp = <STDIN>;
+
+exit(0);
+
+######## END OF MAIN ###########
+
+################## 
+sub getargs{
+ # set defaults 
+   my(@args) = reverse(@ARGV); # reverse so pop works first to last arg 
+   $flags{'-h'} = 0;      # print usage
+   $flags{'-t'} = 'rmiss'; # quiz type 
+   $flags{'-n'} = 20;     # number of words to be used in a quiz
+   $flags{'-s'} = 1;      # right/wrong sound flag 
+   $flags{'-v'} = 0;     # playing volume
+   $flags{'-file'} = "$BEEDIR/etc/mywords.bee";  # input bee file 
+
+#   print "@args\n";
+   while($tmp = pop(@args))
+   {
+     SWITCH: 
+     {
+        if($tmp eq '-h') {usage()};
+        if($tmp eq '-t') 
+	{
+	   $flags{'-t'} = pop(@args); 
+	   if($flags{'-t'} ne 'rall' and 
+              $flags{'-t'} ne 'rmiss' and 
+              $flags{'-t'} ne 'today' and 
+              $flags{'-t'} ne 'rand'){usage()};
+           last SWITCH;
+	};
+        if($tmp eq '-n') 
+	{
+	   $flags{'-n'} = pop(@args); 
+	   if(defined($flags{$flags{'-n'}})) {usage()};
+           last SWITCH;
+	};
+        if($tmp eq '-V') 
+	{
+	   $flags{'-V'} = pop(@args); 
+	   if(defined($flags{$flags{'-V'}})) {usage()};
+           last SWITCH;
+	};
+        if($tmp eq '-v') 
+	{
+	   $flags{'-v'} = pop(@args); 
+	   if(defined($flags{$flags{'-v'}})) {usage()};
+           last SWITCH;
+	};
+        if($#args != -1){print "Usage error:\n"; usage()};
+	if(-R "$tmp"){
+	  $flags{'-file'} = $tmp;
+        }
+	elsif(-R "$BEEDIR/etc/$tmp"){
+	  $flags{'-file'} = "$BEEDIR/etc/$tmp";
+        }
+	else{
+           die("getargs: can not open .bee file, $tmp or $BEEDIR/etc/$tmp\n");
+        }
+     }
+     }
+     if($flags{'-R'} ne '' and $flags{'-r'} ne '')
+     {
+        print "-R and -r can not be used together\n\n";usage();
+     }
+
+     # for today copy today file to backup and set to rmiss and use
+     # all words in the .bee file
+     if($flags{'-t'} eq 'today'){
+       ($mday,$mon)=(localtime(time-86400))[3,4];
+       $mon = $mon+1;
+       if(-e "$BEEDIR/etc/today.bee"){
+        rename("$BEEDIR/etc/today.bee","$BEEDIR/etc/Daily/daily_$mon\_$mday.bee")
+        || die "Could not copy today.bee to daily_$mon\_$mday.bee file";
+       }
+       $flags{'-t'} = 'rmiss';
+       $junk = `wc -l $flags{'-file'}`;
+       ($junk,$flags{'-n'}) = split(/\s+/,$junk);
+       print "$flags{'-t'} $flags{'-n'}\n";
+     };
+
+     # for total random only take one word at a time.
+     if($flags{'-t'} eq 'rand'){$flags{'-n'} = 1};
+     print "getting test words from $flags{'-file'}\n";
+
+#     print "flags\n";
+#     foreach(sort(keys(%flags))){print "$_ $flags{$_}\n";}
+}
+################## 
+################## 
+sub play_word{
+   my($voice) = $flags{'-v'}; # playing voice 
+   my($word) = $_[0];
+   $word =~ s/\n//;
+   `echo $word | $BEEDIR/bin/say -q -v $voice `;
+}
+################## 
+################## 
+sub usage{
+print "Usage: bee [-h] [-t rall | rmiss | rand] [-n num] [-v voice] [file.bee]
+
+ -h    print this message
+ -t    quiz types: rall  => repeat all words until all words are correct. 
+                   rmiss => just repeat missed words.
+                   rand  => continuous quiz randomly selected with repeat.  
+                   today => (not working) copy today file to backup and set to rmiss and use
+                             all words in the .bee file
+
+ -n    number of words   number of word to be selected from .bee file
+ -v    voice type (number)
+";
+exit;
+}
+################## 
+################## 
+sub upmaster{
+# update master bee file
+
+my($word) = $_[0];
+my($corr) = $_[1];
+my($tot);
+my($right);
+
+rename("$BEEDIR/etc/master.bee","$BEEDIR/etc/.master.bee.bak");
+open(BAK,"<$BEEDIR/etc/.master.bee.bak");
+open(MASTER,">$BEEDIR/etc/master.bee");
+while(<BAK>)
+{
+  chop;
+  ($mword,$tot,$right) = split(/\t+/);
+  if($word eq $mword)
+  {
+    $tot++;
+    $right = $right+$corr;
+    print MASTER "$mword\t\t\t$tot\t$right\n";
+  }
+  else
+  {
+    print MASTER "$_\n";
+  }
+}
+close(MASTER);
+close(BAK);
+}
+################## 
+################## 
+sub loadwords{
+  my(@allwords);
+  my(@mwords);
+
+  open(WORDS,"<$_[0]") || die("loadwords: can not open .bee file, $_[0]");
+
+  while(<WORDS>)
+  {
+    if(/>/){
+      s/>//;
+      print $_;
+    }
+    else{
+      chop;
+      @allwords = (@allwords,$_)
+    }
+  }
+  if($flags{'-n'} > $#allwords+1){$flags{'-n'} = $#allwords+1};
+
+  close(WORDS);
+  return @allwords;
+}
+################## 
+
+#################################### 
+# randomize a list of words
+#################################### 
+sub getlist{
+  my($nn) = pop(@_);
+  my(@allwords) = @_;
+  my(@words);
+
+  for($nn ; $nn > 0; $nn--)
+  {
+     $indx = int(rand($#allwords+0.5));
+     if($indx > $#allwords){die("error in loadwords\n")};
+     @words = (@words, splice(@allwords,$indx,1));
+  }
+  return @words;
+}
+
+########################
+##### QUIZ ROUTINE #####
+########################
+# input args: a list of words
+# returns: @missedwords 
+# @missedwords is 
+# 1) contains a list of missed words
+# 2) empty if all correct 
+# 3) contains "QUIT" to signal forced quit 
+
+sub quiz{
+  my(@testwords) = @_;
+  my(@missedwords);
+  my($nn);
+  my($wait_for_return);
+  my($ntoday);
+  my($junk);
+  
+  if($#testwords == -1){die('Error in quiz: input word list empty')};
+  for($nn = 0 ; $nn <= $#testwords ; $nn++)
+  { 
+    do{
+      play_word($testwords[$nn]);
+      $guess = <STDIN>;
+#      $guess =~ tr/A-Z/a-z/;
+      chop($guess);
+      if($guess eq "QUIT") {return "QUIT"};
+    }while($guess eq "r");
+
+#    $testwords[$nn] =~ tr/A-Z/a-z/;
+
+    if($guess eq $testwords[$nn]) # got it right
+    {
+       play_word('correct');
+      printcommon($testwords[$nn]);
+       my $figure = "$BEEDIR/etc/Figures/$testwords[$nn].gif";
+#       `open $figure` if -e $figure;
+    }
+    else # got it wrong 
+    {
+       print "wrong the correct spelling is:    $testwords[$nn]  \n";
+       play_word('boooooo');
+       printcommon($testwords[$nn]);
+
+       my $num_correct_type = 1;
+       print "retype word or type \"save\"\n";
+       while($num_correct_type <= 3){
+         print "$num_correct_type) ";
+         $guess = <STDIN>;
+         chop($guess);
+         if ($guess eq $testwords[$nn]){
+            $num_correct_type++ 
+         }
+         else{
+            $num_correct_type = 1;
+         }
+	 if($guess eq 'save'){
+            open(TODAY,">>$BEEDIR/etc/today.bee"); 
+            print TODAY "$testwords[$nn]\n";
+            close(TODAY); 
+	    $ntoday = `wc -l $BEEDIR/etc/today.bee`;
+	    ($junk,$ntoday) = split(/\s+/,$ntoday);
+	    print "$ntoday words currently in the today.bee file\n";
+            break;
+         }
+       }
+
+       @missedwords = (@missedwords,$testwords[$nn]);
+       upmaster($testwords[$nn],0);
+    }
+  } 
+  return @missedwords
+}
+
+##############
+sub printcommon{
+  my $word = $_[0];
+  foreach(@wordsincommon){
+     print "$_\n" if /$word/;  
+  }
+}
